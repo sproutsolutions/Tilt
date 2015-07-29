@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+
+	<title>Parallax.js | jQuery Example</title>
+
+	<!-- Behavioral Meta Data -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<!-- Styles -->
+	<link rel="stylesheet" type="text/css" href="styles/styles.css"/>
+
+</head>
+<body>
+
+	<div id="container" class="container">
+		<ul id="scene" class="scene">
+			<li class="layer" data-depth="1.00">
+			<div class="wavea">
+			</div>
+			</li>
+			<li class="layer" id="cloudly" data-depth="0.90">
+			<div class="cloud large cloud-1">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="cloud normal cloud-2">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="cloud small cloud-3">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="cloud tiny cloud-4">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="cloud large cloud-5">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="cloud normal cloud-6">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="cloud small cloud-7">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="cloud tiny cloud-8">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="cloud small cloud-9">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="cloud normal cloud-10">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="cloud tiny cloud-11">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="cloud small cloud-12">
+  <div></div><div></div><div></div><div></div>
+</div>
+</li>
+			<li class="layer" id="wave2" data-depth="0.80">
+			<div class="waveb">
+			</div>
+			</li>
+			<li class="layer" id="wave3" data-depth="0.70">
+			<div class="wavec">
+			</div>
+			</li>
+			<li class="layer" id="boater" data-depth="0.60">
+			<div class="boat">
+			</div>
+			</li>
+			<li class="layer" data-depth="0.40">
+			<div class="waved">
+			</div>
+			</li>
+			<li class="layer" data-depth="0.00">
+			<div id="lost">
+			Feeling Lost at Sea?
+			</div>
+			</li>
+			<li class="layer" data-depth="0.00">
+			<div id="wheel">
+			</div>
+			</li>
+		</ul>
+	</div>
+	
+	 <!-- Scripts -->
+	<script src="scripts/jquery.js"></script>
+	<script src="scripts/libraries.min.js"></script>
+	<script src="../deploy/jquery.parallax.js"></script>
+	<script>
+	// jQuery Selections
+	var $html = $('html'),
+			$container = $('#container'),
+			$prompt = $('#prompt'),
+			$toggle = $('#toggle'),
+			$about = $('#about'),
+			$scene = $('#scene');
+
+	// Hide browser menu.
+	(function() {
+		setTimeout(function(){window.scrollTo(0,0);},0);
+	})();
+
+	// Setup FastClick.
+	FastClick.attach(document.body);
+
+	// Add touch functionality.
+	if (Hammer.HAS_TOUCHEVENTS) {
+		$container.hammer({drag_lock_to_axis: true});
+		_.tap($html, 'a,button,[data-tap]');
+	}
+
+	// Add touch or mouse class to html element.
+	$html.addClass(Hammer.HAS_TOUCHEVENTS ? 'touch' : 'mouse');
+
+	// Resize handler.
+	(resize = function() {
+		$scene[0].style.width = window.innerWidth + 'px';
+		$scene[0].style.height = window.innerHeight + 'px';
+		if (!$prompt.hasClass('hide')) {
+			if (window.innerWidth < 600) {
+				$toggle.addClass('hide');
+			} else {
+				$toggle.removeClass('hide');
+			}
+		}
+	})();
+
+	// Attach window listeners.
+	window.onresize = _.debounce(resize, 200);
+	window.onscroll = _.debounce(resize, 200);
+
+	function showDetails() {
+		$about.removeClass('hide');
+		$toggle.removeClass('i');
+	}
+
+	function hideDetails() {
+		$about.addClass('hide');
+		$toggle.addClass('i');
+	}
+
+	// Listen for toggle click event.
+	$toggle.on('click', function(event) {
+		$toggle.hasClass('i') ? showDetails() : hideDetails();
+	});
+
+	// Pretty simple huh?
+	$scene.parallax();
+
+	// Check for orientation support.
+	setTimeout(function() {
+		if ($scene.data('mode') === 'cursor') {
+			$prompt.removeClass('hide');
+			if (window.innerWidth < 600) $toggle.addClass('hide');
+			$prompt.on('click', function(event) {
+				$prompt.addClass('hide');
+				if (window.innerWidth < 600) {
+					setTimeout(function() {
+						$toggle.removeClass('hide');
+					},1200);
+				}
+			});
+		}
+	},1000);
+</script>
+
+</body>
+</html>
